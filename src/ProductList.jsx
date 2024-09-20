@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
+import { addItem } from "./CartSlice";
 function ProductList() {
   const [showCart, setShowCart] = useState(false);
+  const [addedtocart, setAddedtocart] = useState({});
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+
 
   const plantsArray = [
     {
@@ -281,6 +284,15 @@ function ProductList() {
     e.preventDefault();
     setShowCart(false);
   };
+
+  const handleAddToCart = (plant) => {
+    dispatch(addItem(plant));
+    setAddedtocart((prevAddedtocart) => ({
+      ...prevAddedtocart,
+      [plant]: true,
+    }))
+  };
+
   return (
     <div>
       <div className="navbar" style={styleObj}>
@@ -350,7 +362,8 @@ function ProductList() {
                       alt={plant.name}
                     />
                     <div className="product-title">{plant.name}</div>
-                    {/*Similarly like the above plant.name show other details like description and cost*/}
+                    <div className="product-price">{plant.cost}</div>
+                    <div className="product-description">{plant.description}</div>
                     <button
                       className="product-button"
                       onClick={() => handleAddToCart(plant)}
